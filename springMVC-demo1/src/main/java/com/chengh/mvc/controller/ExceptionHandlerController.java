@@ -1,13 +1,15 @@
 package com.chengh.mvc.controller;
 
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import com.chengh.mvc.entity.Result;
+import com.chengh.mvc.entity.ResultCode;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.BindException;
 
 /**
  * 全局异常的处理
@@ -26,9 +28,36 @@ import java.util.Map;
 //全局异常处理的注解
 @RestControllerAdvice
 public class ExceptionHandlerController {
-    //出现Exception异常，或者该异常的子类都会调用本方法
-    @ExceptionHandler(Exception.class)
-    public String handlerException(Exception e) {
-        return "error";
+    /**
+     * 400 - Bad Request 参数绑定出错
+     */
+    @ExceptionHandler(BindException.class)
+    public Result handleBindException(BindException e) {
+        return Result.of(ResultCode.BIND_ERROR);
     }
+
+    /**
+     * 400 - Bad Request
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public Result handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return Result.of(ResultCode.NOTREADABLE_ERROR);
+    }
+
+    /**
+     * 400 - Bad Request
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Result handleValidationException(MethodArgumentNotValidException e) {
+        return Result.of(ResultCode.ARGUMENT_ERROR);
+    }
+
+    /**
+     * 500 - Internal Server Error
+     */
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception e) {
+        return Result.of(ResultCode.EXCEPTION_ERROR).toString();
+    }
+
 }
