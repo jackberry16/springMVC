@@ -6,9 +6,7 @@ package com.chengh.mvc.entity;
 public enum ResultCode {
     SUCCESS("0", "success"),
     BIND_ERROR("1", "BindException错误"),
-    NOTREADABLE_ERROR("2", "HttpMessageNotReadableException错误"),
-    ARGUMENT_ERROR("3", "MethodArgumentNotValidException错误"),
-    EXCEPTION_ERROR("4", "Exception错误");
+    EXCEPTION_ERROR("2", "Exception错误");
 
     private String code;
 
