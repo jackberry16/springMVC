@@ -1,17 +1,17 @@
 package com.chengh.mvc.controller;
 
+import com.chengh.mvc.entity.User;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -64,6 +64,12 @@ public class TestController {
             model.addAttribute("msg", "文件上传失败了" + e.getMessage());
         }
         return "upload";
+    }
+
+    @PostMapping("/user")
+    @ResponseBody
+    public String postUser(@RequestBody @Valid User user){
+        return "success";
     }
 
 }

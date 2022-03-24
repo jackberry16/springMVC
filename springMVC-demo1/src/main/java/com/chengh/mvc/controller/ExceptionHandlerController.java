@@ -9,6 +9,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import java.net.BindException;
 
 /**
@@ -39,9 +40,21 @@ public class ExceptionHandlerController {
     /**
      * 500 - Internal Server Error 服务器内部异常
      */
-    @ExceptionHandler(Exception.class)
-    public String handleException(Exception e) {
-        return Result.of(ResultCode.EXCEPTION_ERROR).toString();
+    @ExceptionHandler(RuntimeException.class)
+    public Result handleException(RuntimeException e) {
+        return Result.of(ResultCode.EXCEPTION_ERROR);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public  Result resolveConstraintViolationException(ConstraintViolationException ex){
+
+        return Result.of(ResultCode.VALIDATION_ERROR);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Result  resolveMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+
+        return Result.of(ResultCode.VALIDATION_ERROR);
     }
 
 }
