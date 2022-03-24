@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Controller
 public class TestController {
@@ -38,18 +39,16 @@ public class TestController {
 
     @RequestMapping("/download")
     public ResponseEntity<byte[]> download(HttpServletRequest request) throws Exception {
-        // 1.得到要下载文件的真实路径
-        ServletContext servletContext = request.getServletContext();
-        String realPath = servletContext.getRealPath("/webapp/WEB-INF/templates/error.html");
-        // 2.得到要下载的文件的流
-        FileInputStream is = new FileInputStream(realPath);
-        byte[] temp = new byte[is.available()];// 使用available获取的大小和文件大小相同
-        is.read(temp);
-        is.close();
-        // 3.将要下载的文件流返回
-        HttpHeaders httpHeaders = new HttpHeaders();// 自定义响应头
-        httpHeaders.set("Content-Disposition","attachment;filename=error.html");
-        return new ResponseEntity<byte[]>(temp, httpHeaders, HttpStatus.OK);
+        File file = new File("D:\\TEST\\8536009.JPG");
+        byte[] body = null;
+        InputStream is = new FileInputStream(file);
+        body = new byte[is.available()];
+        is.read(body);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attchement;filename=" + file.getName());
+        HttpStatus statusCode = HttpStatus.OK;
+        ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(body, headers, statusCode);
+        return entity;
     }
 
     @RequestMapping("/upload")
