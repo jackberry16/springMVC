@@ -37,12 +37,16 @@ public class ExceptionHandlerController {
         return Result.of(ResultCode.BIND_ERROR);
     }
 
+    @ExceptionHandler(Exception.class)
+    public Result handleException(Exception e) {
+        return Result.of(ResultCode.EXCEPTION_ERROR);
+    }
     /**
      * 500 - Internal Server Error 服务器内部异常
      */
     @ExceptionHandler(RuntimeException.class)
     public Result handleException(RuntimeException e) {
-        return Result.of(ResultCode.EXCEPTION_ERROR);
+        return Result.of(ResultCode.RUNTIME_ERROR);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

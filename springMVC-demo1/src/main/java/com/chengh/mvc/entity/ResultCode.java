@@ -7,7 +7,8 @@ public enum ResultCode {
     SUCCESS("0", "success"),
     BIND_ERROR("1", "BindException错误"),
     EXCEPTION_ERROR("2", "Exception错误"),
-    VALIDATION_ERROR("3", "校验错误");
+    VALIDATION_ERROR("3", "校验错误"),
+    RUNTIME_ERROR("4","运行时异常");
 
     private String code;
 
